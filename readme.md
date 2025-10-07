@@ -98,7 +98,7 @@ Project Link: [https://github.com/yourusername/campus-sustainability](https://gi
    ```
    node server/app.js
    ```
-5. Access the application at http://localhost:3000
+5. Access the application at https://campus-kohl-nine.vercel.app/
 
 ## Test Credentials
 
