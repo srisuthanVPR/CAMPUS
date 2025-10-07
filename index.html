@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Sustainability Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+        <div id="login-page" class="login-container">
+        <div class="login-box">
+            <h1>Campus Sustainability Dashboard</h1>
+            <form id="login-form">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+            <p id="login-error" class="error-message" style="display: none;">Invalid username or password. Please try again.</p>
+        </div>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Primary">
+        <div class="nav-container container">
+            <div class="nav-brand">
+                <h2>🌱 Campus Sustainability Dashboard</h2>
+            </div>
+            <div class="nav-menu" role="tablist">
+                <a href="#dashboard" class="nav-link active" data-section="dashboard" role="tab" aria-selected="true">Dashboard</a>
+                <a href="#challenges" class="nav-link" data-section="challenges" role="tab" aria-selected="false">Challenges</a>
+                <a href="#leaderboard" class="nav-link" data-section="leaderboard" role="tab" aria-selected="false">Leaderboard</a>
+                <a href="#impact" class="nav-link" data-section="impact" role="tab" aria-selected="false">Impact</a>
+                <a href="#rewards" class="nav-link" data-section="rewards" role="tab" aria-selected="false">Rewards</a>
+                <a href="#community" class="nav-link" data-section="community" role="tab" aria-selected="false">Community</a>
+                <a href="#profile" class="nav-link" data-section="profile" role="tab" aria-selected="false">Profile</a>
+                <a href="#admin" class="nav-link" data-section="admin" role="tab" aria-selected="false">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notifications -->
+    <div id="notifications" class="notifications-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active" aria-labelledby="dashboard-title">
+            <div class="container">
+                <!-- Welcome Header -->
+                <div class="welcome-header">
+                    <h1 id="dashboard-title">Welcome back, Alex! 🌿</h1>
+                    <p>Your sustainability journey continues. Together, we're making a difference!</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3>847</h3>
+                            <p>Active Users Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <h3>2,840</h3>
+                            <p>Your Points</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🌍</div>
+                        <div class="stat-content">
+                            <h3>45.2kg</h3>
+                            <p>CO₂ Saved</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-content">
+                            <h3>#3</h3>
+                            <p>Your Rank</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Challenges -->
+                <div class="dashboard-section">
+                    <h2>🎯 Active Challenges</h2>
+                    <div class="challenges-preview" id="dashboard-challenges">
+                        <!-- Challenges will be populated by JavaScript -->
+                    </div>
+                    <button class="btn btn-primary" onclick="showSection('challenges')">View All Challenges</button>
+                </div>
+
+                <!-- Recent Badges -->
+                <div class="dashboard-section">
+                    <h2>🏅 Recent Achievements</h2>
+                    <div class="badges-preview" id="dashboard-badges">
+                        <!-- Badges will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Environmental Impact Chart -->
+                <div class="dashboard-section">
+                    <h2>📊 Your Environmental Impact</h2>
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenges Section -->
+        <section id="challenges" class="section" aria-labelledby="challenges-title">
+            <div class="container">
+                <h1 id="challenges-title">🎯 Sustainability Challenges</h1>
+                <p>Take on challenges to earn points and make a real environmental impact!</p>
+                
+                <div class="challenges-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="waste">Waste</button>
+                    <button class="filter-btn" data-filter="energy">Energy</button>
+                    <button class="filter-btn" data-filter="transport">Transport</button>
+                    <button class="filter-btn" data-filter="water">Water</button>
+                </div>
+
+                <div class="challenges-grid" id="challenges-list">
+                    <!-- Challenges will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="section" aria-labelledby="leaderboard-title">
+            <div class="container">
+                <h1 id="leaderboard-title">🏆 Leaderboard</h1>
+                <p>See how you compare with other sustainability champions!</p>
+                
+                <div class="leaderboard-tabs">
+                    <button class="tab-btn active" data-tab="weekly">This Week</button>
+                    <button class="tab-btn" data-tab="monthly">This Month</button>
+                    <button class="tab-btn" data-tab="alltime">All Time</button>
+                </div>
+
+                <div class="leaderboard-container" id="leaderboard-list">
+                    <!-- Leaderboard will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section id="impact" class="section" aria-labelledby="impact-title">
+            <div class="container">
+                <h1 id="impact-title">🌍 Environmental Impact</h1>
+                <p>Track your personal and campus-wide environmental contributions!</p>
+                
+                <div class="impact-overview">
+                    <div class="impact-card">
+                        <div class="impact-icon">🌱</div>
+                        <div class="impact-content">
+                            <h3>12,450 kg</h3>
+                            <p>Total Campus CO₂ Reduced</p>
+                            <div class="impact-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 78%"></div>
+                                </div>
+                                <span>78% of yearly goal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-icon">♻️</div>
+                        <div class="impact-content">
+                            <h3>8,900 kg</h3>
+                            <p>Waste Diverted from Landfills</p>
+                            <div class="impact-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span>65% of yearly goal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-icon">⚡</div>
+                        <div class="impact-content">
+                            <h3>34,500 kWh</h3>
+                            <p>Energy Saved</p>
+                            <div class="impact-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 82%"></div>
+                                </div>
+                                <span>82% of yearly goal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-icon">💧</div>
+                        <div class="impact-content">
+                            <h3>125,000 L</h3>
+                            <p>Water Conserved</p>
+                            <div class="impact-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 71%"></div>
+                                </div>
+                                <span>71% of yearly goal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h2>📈 Impact Trends</h2>
+                    <div class="chart-container">
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Section -->
+        <section id="rewards" class="section" aria-labelledby="rewards-title">
+            <div class="container">
+                <h1 id="rewards-title">🎁 Rewards Marketplace</h1>
+                <p>Redeem your points for amazing sustainability rewards!</p>
+                
+                <div class="rewards-header">
+                    <div class="points-balance">
+                        <span class="points-icon">⭐</span>
+                        <span class="points-amount">2,840 Points Available</span>
+                    </div>
+                </div>
+                
+                <div class="rewards-categories">
+                    <button class="category-btn active" data-category="all">All Rewards</button>
+                    <button class="category-btn" data-category="dining">Dining</button>
+                    <button class="category-btn" data-category="merchandise">Merchandise</button>
+                    <button class="category-btn" data-category="transport">Transport</button>
+                    <button class="category-btn" data-category="events">Events</button>
+                </div>
+                
+                <div class="rewards-grid" id="rewards-list">
+                    <!-- Rewards will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section id="community" class="section" aria-labelledby="community-title">
+            <div class="container">
+                <h1 id="community-title">👥 Community</h1>
+                <p>Connect with fellow sustainability champions and join the movement!</p>
+                
+                <div class="community-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1,250</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">847</div>
+                        <div class="stat-label">Active Today</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Challenges Completed</div>
+                    </div>
+                </div>
+                
+                <div class="community-sections">
+                    <div class="community-section">
+                        <h2>📢 Recent Activity</h2>
+                        <div class="activity-feed" id="activity-feed">
+                            <!-- Activity feed will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="community-section">
+                        <h2>📅 Upcoming Events</h2>
+                        <div class="events-list">
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <div class="date-day">15</div>
+                                    <div class="date-month">Oct</div>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Campus Clean-Up Day</h3>
+                                    <p>Join us for a campus-wide sustainability cleanup event</p>
+                                    <span class="event-time">9:00 AM - 2:00 PM</span>
+                                </div>
+                            </div>
+                            
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <div class="date-day">22</div>
+                                    <div class="date-month">Oct</div>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Renewable Energy Workshop</h3>
+                                    <p>Learn about solar and wind energy solutions</p>
+                                    <span class="event-time">3:00 PM - 5:00 PM</span>
+                                </div>
+                            </div>
+                            
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <div class="date-day">28</div>
+                                    <div class="date-month">Oct</div>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Sustainability Fair</h3>
+                                    <p>Discover eco-friendly products and services</p>
+                                    <span class="event-time">10:00 AM - 4:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section" aria-labelledby="profile-title">
+            <div class="container">
+                <h1 id="profile-title">👤 Your Profile</h1>
+                
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <div class="avatar-circle">AC</div>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Alex Chen</h2>
+                            <p class="profile-level">Eco-Champion Level</p>
+                            <p class="profile-stats">Member since September 2025</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-sections">
+                        <div class="profile-section">
+                            <h3>🏅 Your Badges</h3>
+                            <div class="badges-collection" id="profile-badges">
+                                <!-- Profile badges will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>📊 Your Statistics</h3>
+                            <div class="stats-list">
+                                <div class="stat-row">
+                                    <span class="stat-name">Total Points Earned</span>
+                                    <span class="stat-value">2,840</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-name">Challenges Completed</span>
+                                    <span class="stat-value">23</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-name">CO₂ Saved</span>
+                                    <span class="stat-value">45.2 kg</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-name">Current Rank</span>
+                                    <span class="stat-value">#3</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>⚙️ Settings</h3>
+                            <div class="settings-list">
+                                <div class="setting-item">
+                                    <label>
+                                        <input type="checkbox" checked>
+                                        Email Notifications
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label>
+                                        <input type="checkbox" checked>
+                                        Push Notifications
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label>
+                                        <input type="checkbox">
+                                        Weekly Progress Reports
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label>
+                                        <input type="checkbox" checked>
+                                        Leaderboard Visibility
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="section" aria-labelledby="admin-title">
+            <div class="container">
+                <h1 id="admin-title">⚙️ Admin Dashboard</h1>
+                <p>Manage challenges, users, and monitor system performance</p>
+                
+                <div class="admin-tabs">
+                    <button class="admin-tab-btn active" data-tab="overview">Overview</button>
+                    <button class="admin-tab-btn" data-tab="users">Users</button>
+                    <button class="admin-tab-btn" data-tab="challenges-mgmt">Challenges</button>
+                    <button class="admin-tab-btn" data-tab="analytics">Analytics</button>
+                </div>
+                
+                <div class="admin-content">
+                    <div id="admin-overview" class="admin-tab-content active">
+                        <div class="admin-stats">
+                            <div class="admin-stat-card">
+                                <h3>1,250</h3>
+                                <p>Total Users</p>
+                                <span class="stat-change positive">+12% this week</span>
+                            </div>
+                            <div class="admin-stat-card">
+                                <h3>847</h3>
+                                <p>Active Users</p>
+                                <span class="stat-change positive">+8% this week</span>
+                            </div>
+                            <div class="admin-stat-card">
+                                <h3>234</h3>
+                                <p>Active Challenges</p>
+                                <span class="stat-change neutral">Same as last week</span>
+                            </div>
+                            <div class="admin-stat-card">
+                                <h3>68%</h3>
+                                <p>Engagement Rate</p>
+                                <span class="stat-change positive">+5% this week</span>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-chart-section">
+                            <h3>📈 User Engagement Trends</h3>
+                            <div class="chart-container">
+                                <canvas id="adminChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="admin-users" class="admin-tab-content">
+                        <h3>👥 User Management</h3>
+                        <div class="user-search">
+                            <input type="text" placeholder="Search users..." class="search-input">
+                            <button class="btn btn-primary">Search</button>
+                        </div>
+                        <div class="users-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Points</th>
+                                        <th>Level</th>
+                                        <th>Join Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-list">
+                                    <!-- Users will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="admin-challenges-mgmt" class="admin-tab-content">
+                        <h3>🎯 Challenge Management</h3>
+                        <button class="btn btn-primary">+ Create New Challenge</button>
+                        <div class="challenges-management" id="admin-challenges-list">
+                            <!-- Admin challenges will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div id="admin-analytics" class="admin-tab-content">
+                        <h3>📊 Advanced Analytics</h3>
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h4>Environmental Impact</h4>
+                                <div class="metric">
+                                    <span class="metric-value">12,450 kg</span>
+                                    <span class="metric-label">CO₂ Reduced</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">34,500 kWh</span>
+                                    <span class="metric-label">Energy Saved</span>
+                                </div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <h4>User Engagement</h4>
+                                <div class="metric">
+                                    <span class="metric-value">68%</span>
+                                    <span class="metric-label">Daily Active Users</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">4.2/5</span>
+                                    <span class="metric-label">Avg. User Rating</span>
+                                </div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <h4>Challenge Performance</h4>
+                                <div class="metric">
+                                    <span class="metric-value">76%</span>
+                                    <span class="metric-label">Completion Rate</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">3.8 days</span>
+                                    <span class="metric-label">Avg. Completion Time</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
