@@ -11,16 +11,38 @@
         <div id="login-page" class="login-container">
         <div class="login-box">
             <h1>Campus Sustainability Dashboard</h1>
+            <div class="login-tabs">
+                <button class="login-tab active" data-role="student">Student Login</button>
+                <button class="login-tab" data-role="admin">Admin Login</button>
+            </div>
             <form id="login-form">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter your username" required>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
                 
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
                 
                 <button type="submit" class="btn btn-primary">Sign In</button>
             </form>
             <p id="login-error" class="error-message" style="display: none;">Invalid username or password. Please try again.</p>
+            
+            <div class="demo-credentials">
+                <h3>Demo Credentials:</h3>
+                <div class="credential-group">
+                    <h4>Student Account:</h4>
+                    <p><strong>Username:</strong> student</p>
+                    <p><strong>Password:</strong> student123</p>
+                </div>
+                <div class="credential-group">
+                    <h4>Admin Account:</h4>
+                    <p><strong>Username:</strong> admin</p>
+                    <p><strong>Password:</strong> admin123</p>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Navigation -->
@@ -37,7 +59,13 @@
                 <a href="#rewards" class="nav-link" data-section="rewards" role="tab" aria-selected="false">Rewards</a>
                 <a href="#community" class="nav-link" data-section="community" role="tab" aria-selected="false">Community</a>
                 <a href="#profile" class="nav-link" data-section="profile" role="tab" aria-selected="false">Profile</a>
-                <a href="#admin" class="nav-link" data-section="admin" role="tab" aria-selected="false">Admin</a>
+                <a href="#carbon-calculator" class="nav-link" data-section="carbon-calculator" role="tab" aria-selected="false">Carbon Calculator</a>
+                <a href="#green-events" class="nav-link" data-section="green-events" role="tab" aria-selected="false">Green Events</a>
+                <a href="#admin" class="nav-link admin-only" data-section="admin" role="tab" aria-selected="false">Admin</a>
+            </div>
+            <div class="nav-user">
+                <span id="user-role" class="user-role"></span>
+                <button id="logout-btn" class="btn btn-secondary">Logout</button>
             </div>
         </div>
     </nav>
@@ -407,6 +435,808 @@
             </div>
         </section>
 
+        <!-- Carbon Footprint Calculator Section -->
+        <section id="carbon-calculator" class="section" aria-labelledby="carbon-calculator-title">
+            <div class="container">
+                <h1 id="carbon-calculator-title">🌍 Carbon Footprint Calculator</h1>
+                <p>Calculate and track your personal carbon footprint across different lifestyle areas!</p>
+                
+                <!-- Calculator Tabs -->
+                <div class="calculator-tabs">
+                    <button class="calc-tab-btn active" data-calc="transportation">🚗 Transportation</button>
+                    <button class="calc-tab-btn" data-calc="energy">⚡ Energy Usage</button>
+                    <button class="calc-tab-btn" data-calc="dining">🍽️ Dining Choices</button>
+                    <button class="calc-tab-btn" data-calc="lifestyle">🏠 Lifestyle</button>
+                    <button class="calc-tab-btn" data-calc="goals">🎯 Goals & Tracking</button>
+                </div>
+
+                <!-- Transportation Calculator -->
+                <div id="calc-transportation" class="calculator-content active">
+                    <h2>🚗 Transportation Carbon Calculator</h2>
+                    <div class="calculator-grid">
+                        <div class="calculator-form">
+                            <h3>Daily Commute</h3>
+                            <div class="form-group">
+                                <label>Transportation Method:</label>
+                                <select id="transport-method">
+                                    <option value="car-gas">Car (Gasoline)</option>
+                                    <option value="car-hybrid">Car (Hybrid)</option>
+                                    <option value="car-electric">Car (Electric)</option>
+                                    <option value="motorcycle">Motorcycle</option>
+                                    <option value="bus">Public Bus</option>
+                                    <option value="train">Train/Metro</option>
+                                    <option value="bike">Bicycle</option>
+                                    <option value="walking">Walking</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Distance (miles/day):</label>
+                                <input type="number" id="transport-distance" placeholder="Enter daily distance" min="0" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label>Days per week:</label>
+                                <input type="number" id="transport-days" placeholder="5" min="1" max="7" value="5">
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateTransportation()">Calculate</button>
+                        </div>
+                        <div class="calculator-results">
+                            <h3>Results</h3>
+                            <div id="transport-results">
+                                <div class="result-item">
+                                    <span class="result-label">Weekly CO₂ Emissions:</span>
+                                    <span class="result-value" id="transport-weekly">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Annual CO₂ Emissions:</span>
+                                    <span class="result-value" id="transport-annual">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Carbon Impact:</span>
+                                    <span class="result-impact" id="transport-impact">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Energy Usage Calculator -->
+                <div id="calc-energy" class="calculator-content">
+                    <h2>⚡ Energy Usage Calculator</h2>
+                    <div class="calculator-grid">
+                        <div class="calculator-form">
+                            <h3>Monthly Energy Consumption</h3>
+                            <div class="form-group">
+                                <label>Electricity Usage (kWh/month):</label>
+                                <input type="number" id="electricity-usage" placeholder="Enter monthly kWh" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Heating Fuel Type:</label>
+                                <select id="heating-type">
+                                    <option value="natural-gas">Natural Gas</option>
+                                    <option value="electric">Electric</option>
+                                    <option value="oil">Oil</option>
+                                    <option value="propane">Propane</option>
+                                    <option value="wood">Wood</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Heating Usage (units/month):</label>
+                                <input type="number" id="heating-usage" placeholder="Enter monthly usage" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Home Size (sq ft):</label>
+                                <input type="number" id="home-size" placeholder="Enter square footage" min="0">
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateEnergy()">Calculate</button>
+                        </div>
+                        <div class="calculator-results">
+                            <h3>Results</h3>
+                            <div id="energy-results">
+                                <div class="result-item">
+                                    <span class="result-label">Monthly CO₂ Emissions:</span>
+                                    <span class="result-value" id="energy-monthly">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Annual CO₂ Emissions:</span>
+                                    <span class="result-value" id="energy-annual">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Efficiency Rating:</span>
+                                    <span class="result-impact" id="energy-impact">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dining Choices Calculator -->
+                <div id="calc-dining" class="calculator-content">
+                    <h2>🍽️ Dining Choices Calculator</h2>
+                    <div class="calculator-grid">
+                        <div class="calculator-form">
+                            <h3>Weekly Food Consumption</h3>
+                            <div class="form-group">
+                                <label>Meat meals per week:</label>
+                                <input type="number" id="meat-meals" placeholder="Enter number of meat meals" min="0" max="21">
+                            </div>
+                            <div class="form-group">
+                                <label>Vegetarian meals per week:</label>
+                                <input type="number" id="vegetarian-meals" placeholder="Enter number of vegetarian meals" min="0" max="21">
+                            </div>
+                            <div class="form-group">
+                                <label>Vegan meals per week:</label>
+                                <input type="number" id="vegan-meals" placeholder="Enter number of vegan meals" min="0" max="21">
+                            </div>
+                            <div class="form-group">
+                                <label>Food waste (meals/week):</label>
+                                <input type="number" id="food-waste" placeholder="Enter wasted meals" min="0" max="21">
+                            </div>
+                            <div class="form-group">
+                                <label>Local/organic food percentage:</label>
+                                <select id="local-food">
+                                    <option value="0">0%</option>
+                                    <option value="25">25%</option>
+                                    <option value="50" selected>50%</option>
+                                    <option value="75">75%</option>
+                                    <option value="100">100%</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateDining()">Calculate</button>
+                        </div>
+                        <div class="calculator-results">
+                            <h3>Results</h3>
+                            <div id="dining-results">
+                                <div class="result-item">
+                                    <span class="result-label">Weekly CO₂ Emissions:</span>
+                                    <span class="result-value" id="dining-weekly">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Annual CO₂ Emissions:</span>
+                                    <span class="result-value" id="dining-annual">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Diet Impact:</span>
+                                    <span class="result-impact" id="dining-impact">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lifestyle Calculator -->
+                <div id="calc-lifestyle" class="calculator-content">
+                    <h2>🏠 Lifestyle Decisions Calculator</h2>
+                    <div class="calculator-grid">
+                        <div class="calculator-form">
+                            <h3>Monthly Lifestyle Choices</h3>
+                            <div class="form-group">
+                                <label>Shopping trips (per month):</label>
+                                <input type="number" id="shopping-trips" placeholder="Enter shopping trips" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Online orders (per month):</label>
+                                <input type="number" id="online-orders" placeholder="Enter online orders" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>New clothing items (per month):</label>
+                                <input type="number" id="clothing-items" placeholder="Enter new clothing items" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Electronics purchases (per year):</label>
+                                <input type="number" id="electronics" placeholder="Enter electronics per year" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Recycling participation:</label>
+                                <select id="recycling">
+                                    <option value="0">Never</option>
+                                    <option value="25">Sometimes</option>
+                                    <option value="50">Often</option>
+                                    <option value="75">Usually</option>
+                                    <option value="100">Always</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateLifestyle()">Calculate</button>
+                        </div>
+                        <div class="calculator-results">
+                            <h3>Results</h3>
+                            <div id="lifestyle-results">
+                                <div class="result-item">
+                                    <span class="result-label">Monthly CO₂ Emissions:</span>
+                                    <span class="result-value" id="lifestyle-monthly">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Annual CO₂ Emissions:</span>
+                                    <span class="result-value" id="lifestyle-annual">0 kg</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Lifestyle Impact:</span>
+                                    <span class="result-impact" id="lifestyle-impact">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goals & Tracking -->
+                <div id="calc-goals" class="calculator-content">
+                    <h2>🎯 Carbon Reduction Goals & Tracking</h2>
+                    <div class="goals-container">
+                        <div class="goals-setup">
+                            <h3>Set Your Goals</h3>
+                            <div class="form-group">
+                                <label>Target Annual CO₂ Reduction (%):</label>
+                                <select id="reduction-target">
+                                    <option value="10">10%</option>
+                                    <option value="20" selected>20%</option>
+                                    <option value="30">30%</option>
+                                    <option value="40">40%</option>
+                                    <option value="50">50%</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Priority Areas:</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" value="transportation" checked> Transportation</label>
+                                    <label><input type="checkbox" value="energy" checked> Energy Usage</label>
+                                    <label><input type="checkbox" value="dining" checked> Dining Choices</label>
+                                    <label><input type="checkbox" value="lifestyle" checked> Lifestyle</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="setGoals()">Set Goals</button>
+                        </div>
+                        <div class="goals-progress">
+                            <h3>Your Progress</h3>
+                            <div id="goals-results">
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Overall Carbon Footprint</span>
+                                        <span class="progress-value" id="total-footprint">0 kg CO₂/year</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="footprint-progress" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress-text" id="footprint-status">Calculate your footprint to see progress</div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Reduction Goal</span>
+                                        <span class="progress-value" id="reduction-progress">0%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="reduction-bar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress-text" id="reduction-status">Set your goals to track progress</div>
+                                </div>
+                            </div>
+                            <div class="recommendations" id="recommendations">
+                                <h4>💡 Recommendations</h4>
+                                <ul id="recommendations-list">
+                                    <li>Calculate your footprint in each category to get personalized recommendations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Footprint Summary -->
+                <div class="footprint-summary">
+                    <h2>📊 Your Total Carbon Footprint</h2>
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div class="summary-icon">🚗</div>
+                            <div class="summary-content">
+                                <h3>Transportation</h3>
+                                <div class="summary-value" id="summary-transport">0 kg/year</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">⚡</div>
+                            <div class="summary-content">
+                                <h3>Energy</h3>
+                                <div class="summary-value" id="summary-energy">0 kg/year</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">🍽️</div>
+                            <div class="summary-content">
+                                <h3>Dining</h3>
+                                <div class="summary-value" id="summary-dining">0 kg/year</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">🏠</div>
+                            <div class="summary-content">
+                                <h3>Lifestyle</h3>
+                                <div class="summary-value" id="summary-lifestyle">0 kg/year</div>
+                            </div>
+                        </div>
+                        <div class="summary-card total">
+                            <div class="summary-icon">🌍</div>
+                            <div class="summary-content">
+                                <h3>Total Annual Footprint</h3>
+                                <div class="summary-value" id="summary-total">0 kg CO₂</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Green Event Planning Tools Section -->
+        <section id="green-events" class="section" aria-labelledby="green-events-title">
+            <div class="container">
+                <h1 id="green-events-title">🌿 Green Event Planning Tools</h1>
+                <p>Plan sustainable events with eco-friendly guidelines, vendor directories, and impact assessments!</p>
+                
+                <!-- Event Planning Tabs -->
+                <div class="event-tabs">
+                    <button class="event-tab-btn active" data-event="guidelines">📋 Guidelines</button>
+                    <button class="event-tab-btn" data-event="vendors">🏢 Vendors</button>
+                    <button class="event-tab-btn" data-event="assessment">📊 Assessment</button>
+                    <button class="event-tab-btn" data-event="certification">🏆 Certification</button>
+                    <button class="event-tab-btn" data-event="planner">📅 Planner</button>
+                </div>
+
+                <!-- Eco-Friendly Guidelines -->
+                <div id="event-guidelines" class="event-content active">
+                    <h2>📋 Eco-Friendly Event Guidelines</h2>
+                    <div class="guidelines-container">
+                        <div class="guideline-categories">
+                            <div class="guideline-category">
+                                <h3>🌱 Venue & Location</h3>
+                                <div class="guideline-list">
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Choose LEED-certified venues</h4>
+                                            <p>Select venues with green building certifications for energy efficiency</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Accessible by public transport</h4>
+                                            <p>Ensure venue is easily reachable by bus, train, or bike</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Natural lighting and ventilation</h4>
+                                            <p>Utilize daylight and fresh air to reduce energy consumption</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="guideline-category">
+                                <h3>🍽️ Food & Catering</h3>
+                                <div class="guideline-list">
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Local and organic ingredients</h4>
+                                            <p>Source food from local farms within 100-mile radius</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Plant-based menu options</h4>
+                                            <p>Offer vegetarian and vegan alternatives to reduce carbon footprint</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Compostable or reusable servingware</h4>
+                                            <p>Avoid single-use plastics and styrofoam</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="guideline-category">
+                                <h3>♻️ Waste Management</h3>
+                                <div class="guideline-list">
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Clear recycling stations</h4>
+                                            <p>Set up labeled bins for recycling, compost, and landfill</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Digital materials</h4>
+                                            <p>Use QR codes and mobile apps instead of printed materials</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Food donation programs</h4>
+                                            <p>Partner with local food banks for leftover food</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="guideline-category">
+                                <h3>⚡ Energy & Transportation</h3>
+                                <div class="guideline-list">
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Renewable energy sources</h4>
+                                            <p>Use solar panels or purchase green energy credits</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>Carpooling incentives</h4>
+                                            <p>Offer discounts for attendees who carpool or use public transport</p>
+                                        </div>
+                                    </div>
+                                    <div class="guideline-item">
+                                        <span class="guideline-icon">✅</span>
+                                        <div class="guideline-content">
+                                            <h4>LED lighting</h4>
+                                            <p>Use energy-efficient lighting throughout the event</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sustainable Vendor Directory -->
+                <div id="event-vendors" class="event-content">
+                    <h2>🏢 Sustainable Vendor Directory</h2>
+                    <div class="vendor-search">
+                        <input type="text" id="vendor-search" placeholder="Search vendors by name, category, or certification..." class="search-input">
+                        <select id="vendor-category" class="filter-select">
+                            <option value="">All Categories</option>
+                            <option value="catering">Catering</option>
+                            <option value="venue">Venue</option>
+                            <option value="decorations">Decorations</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="technology">Technology</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="searchVendors()">Search</button>
+                    </div>
+                    
+                    <div class="vendor-grid" id="vendor-grid">
+                        <!-- Vendors will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Environmental Impact Assessment -->
+                <div id="event-assessment" class="event-content">
+                    <h2>📊 Environmental Impact Assessment</h2>
+                    <div class="assessment-container">
+                        <div class="assessment-form">
+                            <h3>Event Details</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Event Name:</label>
+                                    <input type="text" id="event-name" placeholder="Enter event name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Expected Attendees:</label>
+                                    <input type="number" id="attendee-count" placeholder="Number of attendees">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Event Duration (hours):</label>
+                                    <input type="number" id="event-duration" placeholder="Duration in hours">
+                                </div>
+                                <div class="form-group">
+                                    <label>Venue Type:</label>
+                                    <select id="venue-type">
+                                        <option value="indoor">Indoor</option>
+                                        <option value="outdoor">Outdoor</option>
+                                        <option value="hybrid">Hybrid</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <h3>Environmental Factors</h3>
+                            <div class="assessment-grid">
+                                <div class="assessment-section">
+                                    <h4>Transportation</h4>
+                                    <div class="form-group">
+                                        <label>% Arriving by Car:</label>
+                                        <input type="number" id="car-percentage" min="0" max="100" value="60">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>% Using Public Transport:</label>
+                                        <input type="number" id="public-percentage" min="0" max="100" value="30">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>% Walking/Cycling:</label>
+                                        <input type="number" id="walk-cycle-percentage" min="0" max="100" value="10">
+                                    </div>
+                                </div>
+                                
+                                <div class="assessment-section">
+                                    <h4>Energy Usage</h4>
+                                    <div class="form-group">
+                                        <label>LED Lighting:</label>
+                                        <select id="led-lighting">
+                                            <option value="100">100%</option>
+                                            <option value="75">75%</option>
+                                            <option value="50">50%</option>
+                                            <option value="25">25%</option>
+                                            <option value="0">0%</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Renewable Energy:</label>
+                                        <select id="renewable-energy">
+                                            <option value="100">100%</option>
+                                            <option value="75">75%</option>
+                                            <option value="50">50%</option>
+                                            <option value="25">25%</option>
+                                            <option value="0">0%</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="assessment-section">
+                                    <h4>Waste Management</h4>
+                                    <div class="form-group">
+                                        <label>Recycling Program:</label>
+                                        <select id="recycling-program">
+                                            <option value="100">Comprehensive</option>
+                                            <option value="75">Good</option>
+                                            <option value="50">Basic</option>
+                                            <option value="25">Limited</option>
+                                            <option value="0">None</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Digital Materials:</label>
+                                        <select id="digital-materials">
+                                            <option value="100">100%</option>
+                                            <option value="75">75%</option>
+                                            <option value="50">50%</option>
+                                            <option value="25">25%</option>
+                                            <option value="0">0%</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary" onclick="calculateEventImpact()">Calculate Impact</button>
+                        </div>
+                        
+                        <div class="assessment-results">
+                            <h3>Environmental Impact Results</h3>
+                            <div id="impact-results">
+                                <div class="impact-summary">
+                                    <div class="impact-score">
+                                        <div class="score-circle" id="score-circle">
+                                            <span class="score-number" id="score-number">0</span>
+                                            <span class="score-label">Green Score</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="impact-breakdown">
+                                    <div class="impact-item">
+                                        <span class="impact-label">CO₂ Emissions:</span>
+                                        <span class="impact-value" id="co2-emissions">0 kg</span>
+                                    </div>
+                                    <div class="impact-item">
+                                        <span class="impact-label">Energy Usage:</span>
+                                        <span class="impact-value" id="energy-usage">0 kWh</span>
+                                    </div>
+                                    <div class="impact-item">
+                                        <span class="impact-label">Waste Generated:</span>
+                                        <span class="impact-value" id="waste-generated">0 kg</span>
+                                    </div>
+                                    <div class="impact-item">
+                                        <span class="impact-label">Water Usage:</span>
+                                        <span class="impact-value" id="water-usage">0 L</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="recommendations" id="event-recommendations">
+                                    <h4>💡 Recommendations</h4>
+                                    <ul id="event-recommendations-list">
+                                        <li>Complete the assessment to get personalized recommendations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Green Certification Tracking -->
+                <div id="event-certification" class="event-content">
+                    <h2>🏆 Green Certification Tracking</h2>
+                    <div class="certification-container">
+                        <div class="certification-overview">
+                            <h3>Available Certifications</h3>
+                            <div class="cert-grid">
+                                <div class="cert-card">
+                                    <div class="cert-icon">🌿</div>
+                                    <div class="cert-info">
+                                        <h4>Green Events Standard</h4>
+                                        <p>Minimum 70% green practices required</p>
+                                        <div class="cert-status">
+                                            <span class="status-badge" id="ges-status">Not Started</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cert-card">
+                                    <div class="cert-icon">♻️</div>
+                                    <div class="cert-info">
+                                        <h4>Zero Waste Certification</h4>
+                                        <p>90% waste diversion from landfills</p>
+                                        <div class="cert-status">
+                                            <span class="status-badge" id="zw-status">Not Started</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cert-card">
+                                    <div class="cert-icon">⚡</div>
+                                    <div class="cert-info">
+                                        <h4>Carbon Neutral Event</h4>
+                                        <p>Net zero carbon emissions</p>
+                                        <div class="cert-status">
+                                            <span class="status-badge" id="cn-status">Not Started</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cert-card">
+                                    <div class="cert-icon">🌱</div>
+                                    <div class="cert-info">
+                                        <h4>LEED Event Certification</h4>
+                                        <p>Sustainable venue and practices</p>
+                                        <div class="cert-status">
+                                            <span class="status-badge" id="leed-status">Not Started</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="certification-progress">
+                            <h3>Your Progress</h3>
+                            <div class="progress-overview">
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Overall Green Score</span>
+                                        <span class="progress-value" id="overall-score">0%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="overall-progress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Certification Readiness</span>
+                                        <span class="progress-value" id="cert-readiness">0%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="cert-progress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="certification-checklist">
+                                <h4>Certification Checklist</h4>
+                                <div class="checklist-items" id="cert-checklist">
+                                    <!-- Checklist items will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Planner -->
+                <div id="event-planner" class="event-content">
+                    <h2>📅 Green Event Planner</h2>
+                    <div class="planner-container">
+                        <div class="planner-form">
+                            <h3>Create New Event</h3>
+                            <div class="form-group">
+                                <label>Event Name:</label>
+                                <input type="text" id="planner-event-name" placeholder="Enter event name">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Event Date:</label>
+                                    <input type="date" id="planner-event-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Event Time:</label>
+                                    <input type="time" id="planner-event-time">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Event Type:</label>
+                                <select id="planner-event-type">
+                                    <option value="conference">Conference</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="meeting">Meeting</option>
+                                    <option value="social">Social Event</option>
+                                    <option value="festival">Festival</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Expected Attendees:</label>
+                                <input type="number" id="planner-attendees" placeholder="Number of attendees">
+                            </div>
+                            
+                            <h3>Green Planning Checklist</h3>
+                            <div class="planning-checklist">
+                                <div class="checklist-category">
+                                    <h4>Pre-Event Planning</h4>
+                                    <div class="checklist-items">
+                                        <label><input type="checkbox" value="venue-selection"> Select eco-friendly venue</label>
+                                        <label><input type="checkbox" value="vendor-research"> Research sustainable vendors</label>
+                                        <label><input type="checkbox" value="digital-materials"> Plan digital materials</label>
+                                        <label><input type="checkbox" value="transportation"> Arrange transportation options</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="checklist-category">
+                                    <h4>Event Setup</h4>
+                                    <div class="checklist-items">
+                                        <label><input type="checkbox" value="recycling-stations"> Set up recycling stations</label>
+                                        <label><input type="checkbox" value="energy-efficiency"> Configure energy-efficient lighting</label>
+                                        <label><input type="checkbox" value="water-stations"> Install water refill stations</label>
+                                        <label><input type="checkbox" value="signage"> Place eco-friendly signage</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="checklist-category">
+                                    <h4>During Event</h4>
+                                    <div class="checklist-items">
+                                        <label><input type="checkbox" value="monitor-waste"> Monitor waste management</label>
+                                        <label><input type="checkbox" value="energy-monitoring"> Track energy usage</label>
+                                        <label><input type="checkbox" value="attendee-engagement"> Engage attendees in green practices</label>
+                                        <label><input type="checkbox" value="documentation"> Document sustainable practices</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="checklist-category">
+                                    <h4>Post-Event</h4>
+                                    <div class="checklist-items">
+                                        <label><input type="checkbox" value="waste-audit"> Conduct waste audit</label>
+                                        <label><input type="checkbox" value="impact-assessment"> Complete impact assessment</label>
+                                        <label><input type="checkbox" value="feedback-collection"> Collect attendee feedback</label>
+                                        <label><input type="checkbox" value="report-generation"> Generate sustainability report</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary" onclick="createGreenEvent()">Create Green Event</button>
+                        </div>
+                        
+                        <div class="planner-events">
+                            <h3>Your Green Events</h3>
+                            <div class="events-list" id="events-list">
+                                <!-- Events will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Admin Section -->
         <section id="admin" class="section" aria-labelledby="admin-title">
             <div class="container">
@@ -417,6 +1247,7 @@
                     <button class="admin-tab-btn active" data-tab="overview">Overview</button>
                     <button class="admin-tab-btn" data-tab="users">Users</button>
                     <button class="admin-tab-btn" data-tab="challenges-mgmt">Challenges</button>
+                    <button class="admin-tab-btn" data-tab="events-mgmt">Events</button>
                     <button class="admin-tab-btn" data-tab="analytics">Analytics</button>
                 </div>
                 
@@ -485,6 +1316,71 @@
                         </div>
                     </div>
                     
+                    <div id="admin-events-mgmt" class="admin-tab-content">
+                        <h3>📅 Event Management</h3>
+                        <div class="event-management-header">
+                            <button class="btn btn-primary" onclick="showAddEventForm()">+ Add New Event</button>
+                            <div class="event-search">
+                                <input type="text" id="event-search" placeholder="Search events..." class="search-input">
+                                <button class="btn btn-secondary" onclick="searchEvents()">Search</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add Event Form (Hidden by default) -->
+                        <div id="add-event-form" class="add-event-form" style="display: none;">
+                            <h4>Create New Event</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Event Name:</label>
+                                    <input type="text" id="new-event-name" placeholder="Enter event name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Event Type:</label>
+                                    <select id="new-event-type">
+                                        <option value="workshop">Workshop</option>
+                                        <option value="conference">Conference</option>
+                                        <option value="meeting">Meeting</option>
+                                        <option value="social">Social Event</option>
+                                        <option value="festival">Festival</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Event Date:</label>
+                                    <input type="date" id="new-event-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Event Time:</label>
+                                    <input type="time" id="new-event-time">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Location:</label>
+                                    <input type="text" id="new-event-location" placeholder="Enter event location">
+                                </div>
+                                <div class="form-group">
+                                    <label>Expected Attendees:</label>
+                                    <input type="number" id="new-event-attendees" placeholder="Number of attendees">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description:</label>
+                                <textarea id="new-event-description" placeholder="Enter event description" rows="3"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary" onclick="createNewEvent()">Create Event</button>
+                                <button class="btn btn-secondary" onclick="hideAddEventForm()">Cancel</button>
+                            </div>
+                        </div>
+                        
+                        <div class="events-management" id="admin-events-list">
+                            <!-- Admin events will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
                     <div id="admin-analytics" class="admin-tab-content">
                         <h3>📊 Advanced Analytics</h3>
                         <div class="analytics-grid">
@@ -530,6 +1426,7 @@
         </section>
     </main>
 
+    <script src="api-service.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
